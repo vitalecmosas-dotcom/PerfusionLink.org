@@ -1,0 +1,149 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ================= RESET BÁSICO ================= */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body,
+#root {
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden; /* evita desbordes horizontales */
+}
+
+/* ================= BODY GLOBAL ================= */
+
+body {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    Roboto, Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue",
+    sans-serif;
+  background: #020617;
+  color: white;
+  line-height: 1.4;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ================= ELEMENTOS BASE ================= */
+
+button {
+  font-family: inherit;
+}
+
+input,
+textarea,
+select {
+  font-family: inherit;
+  font-size: 14px;
+}
+
+h1 {
+  font-size: 40px;
+  font-weight: 800;
+}
+
+h2 {
+  font-size: 24px;
+  font-weight: 800;
+}
+
+h3 {
+  font-size: 18px;
+  font-weight: 700;
+}
+
+/* ================= SCROLL ================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #020617;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1e293b;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #334155;
+}
+
+/* ================= RESPONSIVE ================= */
+
+/* Tablets / iPad */
+@media (max-width: 1024px) {
+  body {
+    font-size: 15px;
+  }
+
+  h1 {
+    font-size: 32px;
+  }
+
+  h2 {
+    font-size: 22px;
+  }
+
+  section {
+    padding: 24px;
+  }
+}
+
+/* Celulares */
+@media (max-width: 640px) {
+  body {
+    font-size: 14px;
+  }
+
+  button {
+    font-size: 14px;
+  }
+}
+
+/* Evita que cualquier elemento se salga horizontalmente */
+* {
+  max-width: 100%;
+}
+/* ===== FIX GENERAL PARA TARJETAS EN MÓVIL ===== */
+
+.card,
+section,
+.form-card {
+  width: 100%;
+  max-width: 100%;
+  overflow: hidden;
+}
+
+/* Contenedores de inputs */
+.form-grid,
+.fields,
+.inputs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 12px;
+  width: 100%;
+}
+
+/* Inputs */
+input,
+select,
+textarea {
+  width: 100%;
+  max-width: 100%;
+}
+
+/* Evitar que elementos se salgan */
+* {
+  max-width: 100%;
+}
