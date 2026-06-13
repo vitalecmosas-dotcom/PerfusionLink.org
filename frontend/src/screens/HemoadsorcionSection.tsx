@@ -48,6 +48,14 @@ export default function HemoadsorcionSection({
       <div style={header}>
         🩸 Terapia de Hemoadsorción
       </div>
+       <div
+ style={{
+    marginTop: 8,
+    marginBottom: 10,
+    borderTop: "1px solid #334155",
+    width: "100%",
+  }}
+/>
 
       <div style={subTitle}>
         ¿Usar terapia?
@@ -172,7 +180,7 @@ const header:React.CSSProperties={
  fontWeight:800,
  color:"#5eead4",
  marginBottom:20,
- fontSize:18,
+ fontSize:22,
 };
 
 const subTitle:React.CSSProperties={

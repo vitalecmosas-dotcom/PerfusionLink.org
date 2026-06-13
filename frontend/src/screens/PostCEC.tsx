@@ -1,7 +1,7 @@
 import LaboratoriosPostCEC from "./LaboratoriosPostCEC";
 import type { DatosClinicos } from "../types/DatosClinicos";
 import type { Dispatch, SetStateAction } from "react";
-
+import PostCECProtaminaSection from "./PostCECProtaminaSection";
 interface PostCECProps {
   onBack: () => void;
   datos: DatosClinicos;
@@ -69,19 +69,27 @@ onBack();
         Post-CEC
       </h1>
 
-      
-        <div
+      <div
   style={{
     display: "flex",
-    justifyContent: "flex-end",
+    flexDirection: "column",
+    gap: 36,
+    width: "100%",
   }}
 >
+
+  <PostCECProtaminaSection
+    datos={datos}
+    setDatos={setDatos}
+  />
+
   <LaboratoriosPostCEC
-  role={role}
+    role={role}
     onFinalizarCaso={finalizarCaso}
     datos={datos}
     setDatos={setDatos}
   />
+
 </div>
       </div>
   );

@@ -255,6 +255,21 @@ const datosIniciales: DatosClinicos = {
  usar:false,
  tipo:""
 },
+curvaHeparina: {
+  peso: "",
+  actBasal: "",
+  dosisInicialMgKg: "2",
+  dosisBomba: "",
+  actPostHeparina: "",
+  actObjetivo: 480,
+
+  sensibilidadHeparina: "",
+  dosisTotalMgKg: "",
+  dosisTotalMg: "",
+  dosisAdicionalMgKg: "",
+
+  actPostDosisFinal: "",
+},
 
   perfusionSelectiva: {
     pesoCerebral: "",
@@ -275,7 +290,16 @@ const datosIniciales: DatosClinicos = {
 },
 
   intraCEC: {
-    tiemposQuirurgicos: {
+
+  monitorACT: {
+    hora: "",
+    redosisAdministrada: "",
+    registros: [],
+  },
+
+  monitorTiempoCEC: "",
+
+  tiemposQuirurgicos: {
       hora: "",
       registros: [],
       ritmoDesclampeo:"",

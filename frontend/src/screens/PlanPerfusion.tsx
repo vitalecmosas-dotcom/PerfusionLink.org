@@ -7,6 +7,7 @@ import PerfusionSelectivaSection from "./PerfusionSelectivaSection";
 import type { DatosClinicos } from "../types/DatosClinicos";
 import type { Dispatch, SetStateAction } from "react";
 import HemoadsorcionSection from "../screens/HemoadsorcionSection";
+import CurvaHeparinaSection from "./CurvaHeparinaSection";
 
 /* ================= PROPS ================= */
 
@@ -92,6 +93,10 @@ export default function PlanPerfusion({
 
   setDatos={setDatos}
 
+/>
+<CurvaHeparinaSection
+  datos={datos}
+  setDatos={setDatos}
 />
 
       <PrimingHtoSection

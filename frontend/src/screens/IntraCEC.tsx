@@ -6,6 +6,7 @@ import PDGIntraCEC from "./PDGIntraCEC";
 import type { Dispatch, SetStateAction } from "react";
 import type { DatosClinicos } from "../types/DatosClinicos";
 import PDGTendenciaChart from "./PDGTendenciaChart";
+import IntraCECMonitorSection from "./IntraCECMonitorSection";
 
 interface IntraCECProps {
   onBack: () => void;
@@ -81,6 +82,11 @@ export default function IntraCEC({
           datos={datos}
           setDatos={setDatos}
         />
+
+        <IntraCECMonitorSection
+         datos={datos}
+        setDatos={setDatos}
+/>
 
         <PDGIntraCEC
           datos={datos}

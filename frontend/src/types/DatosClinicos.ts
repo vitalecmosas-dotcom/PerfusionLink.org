@@ -156,6 +156,21 @@ planPerfusion: {
 usar:boolean
 tipo:string
 }
+curvaHeparina: {
+  peso: string;
+  actBasal: string;
+  dosisInicialMgKg: string;
+  dosisBomba: string;
+  actPostHeparina: string;
+  actObjetivo: number;
+
+  sensibilidadHeparina: string;
+  dosisTotalMgKg: string;
+  dosisTotalMg: string;
+  dosisAdicionalMgKg: string;
+
+  actPostDosisFinal: string;
+};
 
   perfusionSelectiva: {
     pesoCerebral: string;
@@ -187,10 +202,30 @@ tipo:string
 /* ========= INTRA CEC ========= */
 
 intraCEC: {
+monitorACT: {
+  hora: string;
+  redosisAdministrada: string;
+
+  registros: {
+    hora: string;
+    act: string;
+    temperatura: string;
+    hto: string;
+    plaquetas: string;
+    tiempoCEC: string;
+    deficitACT: string;
+    redosisSugerida: string;
+    redosisAdministrada: string;
+  }[];
+};
+
+  monitorTiempoCEC: string;
   tiemposQuirurgicos: {
     hora: string;
     ritmoDesclampeo: string;
 juliesDesfibrilacion: string;
+
+
 
 tiempoReperfusion: string;
 hotShot: boolean;
@@ -346,6 +381,7 @@ tArterial: number | null;
   hemoderivados: Record<string, string>;
   egresos: Record<string, string>;
 };
+
 
   /* 👇 AQUI ADENTRO */
  pdg: {
