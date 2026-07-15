@@ -1,6 +1,11 @@
 {
   "name": "functions",
   "description": "Cloud Functions for Firebase",
+  "private": true,
+  "main": "index.js",
+  "engines": {
+    "node": "22"
+  },
   "scripts": {
     "serve": "firebase emulators:start --only functions",
     "shell": "firebase functions:shell",
@@ -8,10 +13,6 @@
     "deploy": "firebase deploy --only functions",
     "logs": "firebase functions:log"
   },
-  "engines": {
-    "node": "24"
-  },
-  "main": "index.js",
   "dependencies": {
     "cors": "^2.8.6",
     "firebase-admin": "^13.6.0",
@@ -19,6 +20,5 @@
   },
   "devDependencies": {
     "firebase-functions-test": "^3.4.1"
-  },
-  "private": true
+  }
 }

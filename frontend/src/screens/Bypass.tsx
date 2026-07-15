@@ -141,10 +141,11 @@ const datosGuardados = localStorage.getItem(`datosBypass_${uid}`);
     return (
       <>
         <PlanPerfusion
-          onBack={() => setSection("menu")}
-          datos={datos}
-          setDatos={setDatos}
-        />
+  onBack={() => setSection("menu")}
+  datos={datos}
+  setDatos={setDatos}
+  role={role}
+/>
         <BotonesNavegacion
           onSiguiente={siguienteSeccion}
           onVolver={volverSeccion}

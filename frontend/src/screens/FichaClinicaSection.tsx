@@ -50,14 +50,36 @@ export default function FichaClinicaSection({
 
     const tallaM = t / 100;
 
-    const scRealCalc = Math.sqrt((p * t) / 3600);
-    const pesoIdealCalc = 22 * tallaM * tallaM;
-    const scIdealCalc = Math.sqrt((pesoIdealCalc * t) / 3600);
-    const pesoAjustadoCalc =
-      pesoIdealCalc + 0.4 * (p - pesoIdealCalc);
-    const scAjustadaCalc = Math.sqrt(
-      (pesoAjustadoCalc * t) / 3600
-    );
+   const scRealCalc =
+  Math.sqrt((p * t) / 3600);
+
+/* PESO IDEAL IMC 25 */
+
+const pesoIdealCalc =
+  25 * tallaM * tallaM;
+
+/* SC IDEAL */
+
+const scIdealCalc =
+  Math.sqrt(
+    (pesoIdealCalc * t) / 3600
+  );
+
+/* LEAN FLOW / PESO AJUSTADO */
+
+const excesoPeso =
+  p - pesoIdealCalc;
+
+const pesoAjustadoCalc =
+  pesoIdealCalc +
+  0.25 * excesoPeso;
+
+/* SC AJUSTADA */
+
+const scAjustadaCalc =
+  Math.sqrt(
+    (pesoAjustadoCalc * t) / 3600
+  );
 
    const imcCalc = p / (tallaM * tallaM);
 
@@ -97,6 +119,7 @@ else
 
       <div style={card}>
         <div style={grid4}>
+
   {role === "admin" && (
     <>
       <DateField
@@ -131,58 +154,64 @@ else
           }))
         }
       />
+    </>
+  )}
 
-      <Field
-        label="Edad"
-        value={datos.edad}
+  <Field
+    label="Edad"
+    value={datos.edad}
+    onChange={(v) =>
+      setDatos((prev) => ({
+        ...prev,
+        edad: v,
+      }))
+    }
+  />
+
+</div>
+
+       <div style={grid3}>
+
+  <Select
+    label="Género"
+    options={["Masculino", "Femenino"]}
+    value={datos.genero}
+    onChange={(v) =>
+      setDatos((prev) => ({
+        ...prev,
+        genero: v,
+      }))
+    }
+  />
+
+  {role === "admin" && (
+    <>
+      <Select
+        label="Grupo sanguíneo"
+        options={["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]}
+        value={datos.grupoSanguineo}
         onChange={(v) =>
           setDatos((prev) => ({
             ...prev,
-            edad: v,
+            grupoSanguineo: v,
+          }))
+        }
+      />
+
+      <Textarea
+        label="Diagnóstico actual"
+        value={datos.diagnosticoActual}
+        onChange={(v) =>
+          setDatos((prev) => ({
+            ...prev,
+            diagnosticoActual: v,
           }))
         }
       />
     </>
   )}
+
 </div>
-
-        <div style={grid3}>
-          <Select
-            label="Género"
-            options={["Masculino", "Femenino"]}
-            value={datos.genero}
-            onChange={(v) =>
-              setDatos((prev) => ({
-                ...prev,
-                genero: v,
-              }))
-            }
-          />
-
-          <Select
-            label="Grupo sanguíneo"
-            options={["O+", "O-", "A+", "A-", "B+", "B-", "AB+", "AB-"]}
-            value={datos.grupoSanguineo}
-            onChange={(v) =>
-              setDatos((prev) => ({
-                ...prev,
-                grupoSanguineo: v,
-              }))
-            }
-          />
-
-          <Textarea
-            label="Diagnóstico actual"
-            value={datos.diagnosticoActual}
-            onChange={(v) =>
-              setDatos((prev) => ({
-                ...prev,
-                diagnosticoActual: v,
-              }))
-            }
-          />
-        </div>
-
         <div style={grid3}>
           <Input
             label="Peso real (kg)"
@@ -199,7 +228,7 @@ else
               setDatos((prev) => ({ ...prev, talla: v }))
             }
           />
-
+{role === "admin" && (
           <Textarea
             label="Antecedentes de importancia"
             value={datos.antecedentes}
@@ -211,8 +240,9 @@ else
               
             }
           />
+          )}
         </div>
-        
+        {role === "admin" && (
 <div style={grid3}>
 
   <div>
@@ -308,6 +338,7 @@ else
   </div>
 
 </div>
+)}
         <div style={metrics}>
           <Metric label="SC Real (m²)" value={scReal} />
           <Metric label="SC Ideal (m²)" value={scIdeal} />

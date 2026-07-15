@@ -15,6 +15,7 @@ interface PlanPerfusionProps {
   onBack: () => void;
   datos: DatosClinicos;
   setDatos: Dispatch<SetStateAction<DatosClinicos>>;
+  role: string;
 }
 
 /* ================= COMPONENTE ================= */
@@ -23,6 +24,7 @@ export default function PlanPerfusion({
   onBack,
   datos,
   setDatos,
+  role,
 }: PlanPerfusionProps) {
   return (
     <div
@@ -68,15 +70,29 @@ export default function PlanPerfusion({
       </h1>
 
       {/* TARJETAS */}
-      <EspecificacionesCircuitoSection
-        datos={datos}
-        setDatos={setDatos}
-      />
+      {role === "admin" && (
 
-      <TemperaturaEstrategiasSection
-        datos={datos}
-        setDatos={setDatos}
-      />
+  <EspecificacionesCircuitoSection
+
+    datos={datos}
+
+    setDatos={setDatos}
+
+  />
+
+)}
+
+      {role === "admin" && (
+
+  <TemperaturaEstrategiasSection
+
+    datos={datos}
+
+    setDatos={setDatos}
+
+  />
+
+)}
 
       <CalculoFlujosSection
         datos={datos}
@@ -87,13 +103,14 @@ export default function PlanPerfusion({
         datos={datos}
         setDatos={setDatos}
       />
-      <HemoadsorcionSection
+      {role === "admin" && (
 
-  datos={datos}
+  <HemoadsorcionSection
+    datos={datos}
+    setDatos={setDatos}
+  />
 
-  setDatos={setDatos}
-
-/>
+)}
 <CurvaHeparinaSection
   datos={datos}
   setDatos={setDatos}
@@ -104,10 +121,14 @@ export default function PlanPerfusion({
         setDatos={setDatos}
       />
 
-      <PerfusionSelectivaSection
-        datos={datos}
-        setDatos={setDatos}
-      />
+      {role === "admin" && (
+
+  <PerfusionSelectivaSection
+    datos={datos}
+    setDatos={setDatos}
+  />
+
+)}
     </div>
   );
 }

@@ -3,17 +3,21 @@ import React, { useState, useEffect } from "react";
 import Bypass from "./Bypass";
 import IA from "./IA";
 import type { DatosClinicos } from "../types/DatosClinicos";
-const ADMIN_UID="ALYj0ATi6OgXyrHwtYWEjyuHdRx1";
-
-
 interface HomeProps {
   user: string;
   role: string;
+  isAdmin: boolean;
   uid: string; // 🔥 NUEVO
+  welcome: boolean;
   onLogout: () => void;
 }
 
-type View = "home" | "bypass" | "ia";
+type View =
+  | "home"
+  | "bypass"
+  | "ia"
+  
+  
 
 /* ================= DATOS INICIALES ================= */
 /* 🔥 IMPORTANTE: fuera del componente */
@@ -107,6 +111,19 @@ const datosIniciales: DatosClinicos = {
       noradrenalina: "",
       vasopresina: "",
     },
+    euroscore: {
+  edad: "",
+  sexo: "",
+  creatinina: "",
+  fevi: "",
+  nyha: "",
+  cirugiaUrgente: false,
+  cirugiaAortica: false,
+  endocarditis: false,
+  estadoCritico: false,
+  score: "",
+  riesgo: "",
+},
   },
   checklist: {
     categorias: [
@@ -217,6 +234,9 @@ const datosIniciales: DatosClinicos = {
 
   temperaturaEstrategia: "",
   estrategiasAhorro: [],
+  volumenRetornoVenoso: "",
+volumenZBUF: "",
+volumenHemofiltracion: "",
 
   flujos: {
     estrategiaPeso: "real",
@@ -431,6 +451,9 @@ nirsI: null,
 },
 
  postCEC: {
+
+  relacionProtamina: "1:1",
+
   condicionSalida:"",
 
   laboratorios: {
@@ -483,7 +506,9 @@ nirsI: null,
 export default function Home({
   user,
   role,
+  isAdmin,
   uid,
+  welcome,
   onLogout,
 }: HomeProps) {
 
@@ -493,22 +518,29 @@ export default function Home({
   const [datos, setDatos] =
     useState<DatosClinicos>(datosIniciales);
 
+    const [mostrarBienvenida, setMostrarBienvenida] =
+  useState(false);
+
   useEffect(() => {
   console.log("UID actual:", uid);
-    if (!uid) return;
+  console.log("ROLE actual:", role);
+}, [uid, role]);
 
-    if (uid !== ADMIN_UID) {
+useEffect(() => {
 
-      alert(
-        "PerfusionLink se encuentra temporalmente en acceso restringido."
-      );
+  if (!welcome) return;
 
-      onLogout();
+  setMostrarBienvenida(true);
 
-    }
+  const timer = setTimeout(() => {
 
-  }, [uid, onLogout]);
+    setMostrarBienvenida(false);
 
+  }, 5000);
+
+  return () => clearTimeout(timer);
+
+}, [welcome]);
    // 🔹 Cargar datos guardados al iniciar
  useEffect(() => {
    if (!uid) return;
@@ -547,58 +579,6 @@ localStorage.removeItem(
 `datosClinicos_${uid}`
 );
 
-};
-if(false && uid!==ADMIN_UID){
-
-return(
-
-<div
-style={{
-minHeight:"100vh",
-background:"#020617",
-display:"flex",
-justifyContent:"center",
-alignItems:"center",
-padding:30,
-color:"white"
-}}
->
-
-<div
-style={{
-background:"#1e293b",
-padding:40,
-borderRadius:20,
-border:"1px solid #334155",
-textAlign:"center",
-maxWidth:500
-}}
->
-
-<h2 style={{color:"#5eead4"}}>
-PerfusionLink
-</h2>
-
-<p>
-La plataforma se encuentra temporalmente
-en acceso restringido.
-</p>
-
-<p
-style={{
-marginTop:15,
-fontSize:12,
-color:"#94a3b8"
-}}
->
-Acceso exclusivo para administrador.
-</p>
-
-</div>
-
-</div>
-
-)
 
 }
   if (view === "bypass") {
@@ -636,11 +616,15 @@ style={{
 minHeight:"100vh",
 background:"#020617",
 display:"flex",
-flexDirection:"column"
+flexDirection:"column",
+paddingBottom:"180px"
 }}
 >
 
-<Header onLogout={onLogout}/>
+<Header
+  uid={uid}
+  onLogout={onLogout}
+/>
 
 <div
 style={{
@@ -652,7 +636,25 @@ margin:"0 auto"
 >
 
 {/* BIENVENIDA */}
-
+{mostrarBienvenida && (
+  <div
+    style={{
+      background: "#dcfce7",
+      color: "#166534",
+      border: "1px solid #86efac",
+      borderRadius: 12,
+      padding: "16px 20px",
+      marginBottom: 25,
+      textAlign: "center",
+      fontWeight: 600,
+      fontSize: 16,
+    }}
+  >
+    🎉 <strong>¡Bienvenido a PerfusionLink Premium!</strong>
+    <br />
+    Tu suscripción ya está activa. Ya puedes acceder a todas las funciones Premium.
+  </div>
+)}
 <div
 style={{
 marginBottom:40,
@@ -698,6 +700,17 @@ Plataforma de gestión de datos y análisis clínico
 {/* GRID */}
 
 <div style={dashboardGrid}>
+  {isAdmin && (
+
+<Card
+  icon="⚙️"
+  title="Configuración"
+  onClick={() => {
+    // abrir config
+  }}
+/>
+
+)}
 
 <Card
 icon="🫀"
@@ -710,6 +723,7 @@ icon="🧑🏻‍⚕️"
 title="Asistente de Perfusión"
 onClick={()=>setView("ia")}
 />
+
 
 </div>
 

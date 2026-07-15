@@ -3,12 +3,17 @@ import {
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
-import { getDoc, setDoc, doc } from "firebase/firestore";
+import { getDoc, setDoc, doc, updateDoc, } from "firebase/firestore";
 import { auth, db } from "../services/firebase";
 
 interface LoginProps {
 
-  onLogin?: (username: string, role: string, uid: string) => void;
+ onLogin?: (
+  username: string,
+  role: string,
+  subscription: string,
+  uid: string
+) => void;
 }
 
 
@@ -39,12 +44,44 @@ const login = async () => {
 console.log("UID autenticado:", cred.user.uid);
 
 const snap = await getDoc(doc(db, "usuarios", cred.user.uid));
+if (snap.exists()) {
+
+  const data = snap.data();
+
+  if (
+    data.subscription === "active" &&
+    data.subscriptionExpiresAt
+  ) {
+
+    const now = new Date();
+
+    const expiration =
+      data.subscriptionExpiresAt.toDate();
+
+    if (expiration < now) {
+
+      await updateDoc(
+        doc(db, "usuarios", cred.user.uid),
+        {
+          subscription: "inactive",
+        }
+      );
+
+      data.subscription = "inactive";
+
+    }
+
+  }
+
+}
 console.log("EXISTE DOC:", snap.exists());
 console.log("UID buscado:", cred.user.uid);
 let nombreUsuario = email;
 let role = "user";
+let subscription = "inactive";
 
 if (snap.exists()) {
+
   const data = snap.data();
 
   console.log("Datos Firestore:", data);
@@ -54,15 +91,47 @@ if (snap.exists()) {
     (data.apellido ? " " + data.apellido : "");
 
   role = data.role || "user";
+
+  subscription = data.subscription || "inactive";
+
+  // Verificar si la suscripción ya venció
+  if (
+    subscription === "active" &&
+    data.subscriptionExpiresAt
+  ) {
+
+    const expiration =
+      data.subscriptionExpiresAt.toDate();
+
+    const now = new Date();
+
+    if (expiration <= now) {
+
+      console.log("Suscripción vencida.");
+
+      subscription = "inactive";
+
+    }
+
+  }
+
 }
 console.log("ROL FINAL:", role); // ✅ AQUÍ
 console.log("Nombre enviado al Home:", nombreUsuario);
 
 // 🔥 guardar rol global
 localStorage.setItem("userRole", role);
-
+localStorage.setItem(
+  "subscription",
+  subscription
+);
 if (onLogin) {
-  onLogin(nombreUsuario, role, cred.user.uid);
+  onLogin(
+  nombreUsuario,
+  role,
+  subscription,
+  cred.user.uid
+);
 }
   } catch (error: any) {
     alert(error.code + " - " + error.message);
@@ -84,14 +153,24 @@ if (onLogin) {
         password
       );
 
-      await setDoc(doc(db, "usuarios", cred.user.uid), {
+     await setDoc(doc(db, "usuarios", cred.user.uid), {
+
   nombre,
+
   apellido,
+
   pais,
+
   profesion,
+
   email,
+
   role: "user",
+
+  subscription: "inactive",
+
   creado: new Date(),
+
 });
 
       alert("Cuenta creada correctamente");

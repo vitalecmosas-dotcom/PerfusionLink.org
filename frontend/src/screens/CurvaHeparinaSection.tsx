@@ -13,7 +13,19 @@ export default function CurvaHeparinaSection({
 }: Props) {
 
   const curva =
-    datos.planPerfusion.curvaHeparina;
+  datos.planPerfusion?.curvaHeparina || {
+    peso: "",
+    actBasal: "",
+    dosisInicialMgKg: "2",
+    dosisBomba: "",
+    actPostHeparina: "",
+    actObjetivo: 480,
+    sensibilidadHeparina: "",
+    dosisTotalMgKg: "",
+    dosisTotalMg: "",
+    dosisAdicionalMgKg: "",
+    actPostDosisFinal: "",
+  };
 
   /* ================= CÁLCULOS ================= */
 

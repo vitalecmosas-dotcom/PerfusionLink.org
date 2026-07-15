@@ -88,6 +88,7 @@
   <LaboratoriosSection
     datos={datos}
     setDatos={setDatos}
+    role={role}
   />
 
   <EcoHemodinamicaSection

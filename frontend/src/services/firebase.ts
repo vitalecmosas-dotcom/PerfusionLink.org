@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 import { initializeFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBqSPJthVzTT585nq1ZGeQVuFfDFFjgKMo",
+  apiKey: "AIzaSyBS8FW5p2e3w90IPRlN1CrMsN6iXsXUv80",
   authDomain: "gemini-backend-eliana-62ea3.firebaseapp.com",
   projectId: "gemini-backend-eliana-62ea3",
   storageBucket: "gemini-backend-eliana-62ea3.appspot.com",

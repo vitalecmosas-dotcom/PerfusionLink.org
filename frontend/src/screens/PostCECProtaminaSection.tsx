@@ -1,6 +1,6 @@
 import type { DatosClinicos } from "../types/DatosClinicos";
 import type { Dispatch, SetStateAction } from "react";
-
+import React from "react";
 interface Props {
   datos: DatosClinicos;
   setDatos: Dispatch<SetStateAction<DatosClinicos>>;
@@ -8,12 +8,25 @@ interface Props {
 
 export default function PostCECProtaminaSection({
   datos,
-}: Props) {
+  setDatos,
+}: Props){
 
   /* ================= CURVA HEPARINA ================= */
 
-  const curva =
-    datos.planPerfusion.curvaHeparina;
+ const curva =
+  datos.planPerfusion?.curvaHeparina || {
+    peso: "",
+    actBasal: "",
+    dosisInicialMgKg: "2",
+    dosisBomba: "",
+    actPostHeparina: "",
+    actObjetivo: 480,
+    sensibilidadHeparina: "",
+    dosisTotalMgKg: "",
+    dosisTotalMg: "",
+    dosisAdicionalMgKg: "",
+    actPostDosisFinal: "",
+  };
 
   const peso =
     Number(curva.peso || 0);
@@ -76,10 +89,18 @@ const actObjetivoReversion =
   reducir protamina
 */
 
-const factorReversion =
-  actBasal > 120
-    ? 0.8
-    : 1;
+const relacionProtamina =
+  datos.postCEC?.relacionProtamina || "1:1";
+
+let factorReversion = 1;
+
+if (relacionProtamina === "0.8:1") {
+  factorReversion = 0.8;
+}
+
+if (relacionProtamina === "0.7:1") {
+  factorReversion = 0.7;
+}
 
 /* ================= PROTAMINA ================= */
 
@@ -133,6 +154,51 @@ const protaminaSugerida =
 
       {/* GRID */}
 
+<div
+  style={{
+    marginBottom: 20,
+    display: "flex",
+    flexDirection: "column",
+    gap: 8,
+    maxWidth: 240,
+  }}
+>
+
+  <label
+    style={{
+      color: "#94a3b8",
+      fontSize: 12,
+      fontWeight: 600,
+    }}
+  >
+    Relación Protamina / Heparina
+  </label>
+
+  <select
+    value={relacionProtamina}
+    onChange={(e) =>
+      setDatos((prev) => ({
+        ...prev,
+        postCEC: {
+          ...prev.postCEC,
+          relacionProtamina: e.target.value,
+        },
+      }))
+    }
+    style={{
+      background: "#020617",
+      border: "1px solid #334155",
+      borderRadius: 10,
+      padding: 10,
+      color: "white",
+    }}
+  >
+    <option value="1:1">1 : 1</option>
+    <option value="0.8:1">0.8 : 1</option>
+    <option value="0.7:1">0.7 : 1</option>
+  </select>
+
+</div>
       <div
         style={{
           display: "grid",

@@ -17,10 +17,30 @@ export default function IntraCECMonitorSection({
   /* ================= CURVA HEPARINA ================= */
 
   const curva =
-    datos.planPerfusion.curvaHeparina;
+    datos.planPerfusion?.curvaHeparina || {
+      peso: "",
+      actBasal: "",
+      dosisInicialMgKg: "2",
+      dosisBomba: "",
+      actPostHeparina: "",
+      actObjetivo: 480,
+      sensibilidadHeparina: "",
+      dosisTotalMgKg: "",
+      dosisTotalMg: "",
+      dosisAdicionalMgKg: "",
+      actPostDosisFinal: "",
+    };
+
+  /* ================= MONITOR ACT ================= */
 
   const monitor =
-    datos.intraCEC.monitorACT;
+    datos.intraCEC?.monitorACT || {
+      hora: "",
+      redosisAdministrada: "",
+      registros: [],
+    };
+
+  /* ================= DATOS CURVA ================= */
 
   const actBasal =
     Number(curva.actBasal || 0);
@@ -44,30 +64,30 @@ export default function IntraCECMonitorSection({
         )
       : 0;
 
-  /* ================= DATOS INTRA CEC ================= */
+  /* ================= DATOS LAB ================= */
 
   const actActual =
     Number(
       datos.intraCEC
-        .laboratorio
-        .campos
-        .act || 0
+        ?.laboratorio
+        ?.campos
+        ?.act || 0
     );
 
   const hto =
     Number(
       datos.intraCEC
-        .laboratorio
-        .campos
-        .hto || 0
+        ?.laboratorio
+        ?.campos
+        ?.hto || 0
     );
 
   const plaquetas =
     Number(
       datos.intraCEC
-        .laboratorio
-        .campos
-        .plaquetas || 0
+        ?.laboratorio
+        ?.campos
+        ?.plaquetas || 0
     );
 
   /* ================= TEMPERATURA ================= */
@@ -75,16 +95,16 @@ export default function IntraCECMonitorSection({
   const temperatura =
     Number(
       datos.intraCEC
-        .parametros
-        .tVenosa ??
+        ?.parametros
+        ?.tVenosa ??
 
       datos.intraCEC
-        .parametros
-        .tArterial ??
+        ?.parametros
+        ?.tArterial ??
 
       datos.intraCEC
-        .parametros
-        .tempEsofagica ??
+        ?.parametros
+        ?.tempEsofagica ??
 
       0
     );
@@ -94,7 +114,7 @@ export default function IntraCECMonitorSection({
   const tiempoCEC =
     Number(
       datos.intraCEC
-        .monitorTiempoCEC || 0
+        ?.monitorTiempoCEC || 0
     );
 
   /* ================= CALCULOS ================= */
@@ -117,7 +137,7 @@ export default function IntraCECMonitorSection({
   /* ================= HEPARINA ACUMULADA ================= */
 
   const heparinaAcumulada =
-    monitor.registros.reduce(
+    (monitor.registros || []).reduce(
       (acc, r) =>
         acc +
         Number(
@@ -209,11 +229,18 @@ export default function IntraCECMonitorSection({
 
         monitorACT: {
 
-          ...prev.intraCEC.monitorACT,
+          ...(prev.intraCEC.monitorACT || {
+            hora: "",
+            redosisAdministrada: "",
+            registros: [],
+          }),
 
           registros: [
 
-            ...prev.intraCEC.monitorACT.registros,
+            ...(
+              prev.intraCEC.monitorACT
+                ?.registros || []
+            ),
 
             {
               hora:
@@ -265,10 +292,17 @@ export default function IntraCECMonitorSection({
 
         monitorACT: {
 
-          ...prev.intraCEC.monitorACT,
+          ...(prev.intraCEC.monitorACT || {
+            hora: "",
+            redosisAdministrada: "",
+            registros: [],
+          }),
 
           registros:
-            prev.intraCEC.monitorACT.registros.filter(
+            (
+              prev.intraCEC.monitorACT
+                ?.registros || []
+            ).filter(
               (_, i) => i !== index
             ),
         },
@@ -392,7 +426,7 @@ export default function IntraCECMonitorSection({
             type="number"
             value={
               datos.intraCEC
-                .monitorTiempoCEC || ""
+                ?.monitorTiempoCEC || ""
             }
             onChange={(e) =>
               setDatos(
@@ -464,7 +498,7 @@ export default function IntraCECMonitorSection({
 
       </div>
 
-      {/* REGISTRO ACT */}
+      {/* REGISTRO */}
 
       <div
         style={{
@@ -476,40 +510,6 @@ export default function IntraCECMonitorSection({
         }}
       >
 
-        {/* HORA */}
-
-        <div>
-
-          <label style={labelStyle}>
-            Hora ACT
-          </label>
-
-          <input
-            type="time"
-            value={monitor.hora}
-            onChange={(e) =>
-              setDatos((prev) => ({
-
-                ...prev,
-
-                intraCEC: {
-
-                  ...prev.intraCEC,
-
-                  monitorACT: {
-
-                    ...prev.intraCEC.monitorACT,
-
-                    hora:
-                      e.target.value,
-                  },
-                },
-              }))
-            }
-            style={inputStyle}
-          />
-
-        </div>
 
         {/* REDOSIS */}
 
@@ -535,7 +535,11 @@ export default function IntraCECMonitorSection({
 
                   monitorACT: {
 
-                    ...prev.intraCEC.monitorACT,
+                    ...(prev.intraCEC.monitorACT || {
+                      hora: "",
+                      redosisAdministrada: "",
+                      registros: [],
+                    }),
 
                     redosisAdministrada:
                       e.target.value,
@@ -565,7 +569,11 @@ export default function IntraCECMonitorSection({
 
               monitorACT: {
 
-                ...prev.intraCEC.monitorACT,
+                ...(prev.intraCEC.monitorACT || {
+                  hora: "",
+                  redosisAdministrada: "",
+                  registros: [],
+                }),
 
                 hora: v,
               },
@@ -577,7 +585,7 @@ export default function IntraCECMonitorSection({
 
       {/* REGISTROS */}
 
-      {monitor.registros.map((r, i) => (
+      {(monitor.registros || []).map((r, i) => (
 
         <div
           key={i}

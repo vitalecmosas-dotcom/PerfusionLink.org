@@ -99,6 +99,21 @@ escalasRiesgo: {
     noradrenalina: string;
     vasopresina: string;
   };
+  euroscore: {
+  edad: string;
+  sexo: string;
+  creatinina: string;
+  fevi: string;
+  nyha: string;
+
+  cirugiaUrgente: boolean;
+  cirugiaAortica: boolean;
+  endocarditis: boolean;
+  estadoCritico: boolean;
+
+  score: string;
+  riesgo: string;
+};
 };
 /* ========= PLAN PERFUSION ========= */
 planPerfusion: {
@@ -116,6 +131,9 @@ planPerfusion: {
   temperaturaEstrategia: string;
 
   estrategiasAhorro: string[];
+  volumenRetornoVenoso: string;
+volumenZBUF: string;
+volumenHemofiltracion: string;
 
   flujos: {
     estrategiaPeso: string;
@@ -396,6 +414,7 @@ tArterial: number | null;
 
 postCEC: {
 
+  relacionProtamina: string;
   condicionSalida:string;
 
   laboratorios: {
@@ -440,5 +459,6 @@ postCEC: {
     milrinona: string;
     vasopresina: string;
   };
+  
 };
 }

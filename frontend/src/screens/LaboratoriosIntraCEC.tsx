@@ -81,7 +81,58 @@ const setCampo = (
       },
     }));
   };
+/* ================= CORRECCIONES ================= */
 
+const pesoPaciente =
+  Number(datos.pesoReal || 0);
+
+const ebActual =
+  getCampo("ebA") || 0;
+
+const sodioActual =
+  getCampo("sodio") || 0;
+
+const potasioActual =
+  getCampo("potasio") || 0;
+
+/* ===== BICARBONATO ===== */
+
+const bicarbonatoRequerido =
+  ebActual < 0
+    ? Math.abs(
+        ebActual *
+        0.3 *
+        pesoPaciente
+      ).toFixed(1)
+    : "0";
+
+/* ===== POTASIO ===== */
+
+const potasioRequerido =
+  potasioActual > 0 &&
+  potasioActual < 4
+
+    ? (
+        0.2 *
+        pesoPaciente *
+        (4 - potasioActual)
+      ).toFixed(1)
+
+    : "0";
+
+/* ===== SODIO ===== */
+
+const sodioRequerido =
+  sodioActual > 0 &&
+  sodioActual < 140
+
+    ? (
+        0.2 *
+        pesoPaciente *
+        (140 - sodioActual)
+      ).toFixed(1)
+
+    : "0";
   /* ================= SvO2 TEMP ACT ================= */
 
 const calcularSvO2=(
@@ -338,6 +389,56 @@ tempVenosa
   <Field label="K⁺" value={getCampo("potasio")} onChange={(v)=>setCampo("potasio",v)} />
   <Field label="Cl⁻" value={getCampo("cloro")} onChange={(v)=>setCampo("cloro",v)} />
   <Field label="Ca²⁺" value={getCampo("calcio")} onChange={(v)=>setCampo("calcio",v)} />
+</Section>
+<Section
+  title="CORRECCIONES"
+  color="#f59e0b"
+>
+
+  <CalculatedField
+    label="NaHCO₃ requerido (mmol)"
+    value={Number(
+      bicarbonatoRequerido
+    )}
+  />
+
+  <CalculatedField
+    label="K⁺ requerido (mEq)"
+    value={Number(
+      potasioRequerido
+    )}
+  />
+
+  <CalculatedField
+    label="Na⁺ requerido (mEq)"
+    value={Number(
+      sodioRequerido
+    )}
+  />
+
+  <div
+    style={{
+      gridColumn: "1 / -1",
+      fontSize: 10,
+      color: "#94a3b8",
+      marginTop: 8,
+      lineHeight: 1.5,
+    }}
+  >
+    Bicarbonato:
+    BE × 0.3 × Kg
+
+    <br />
+
+    Potasio:
+    0.2 × Kg × (4 - K actual)
+
+    <br />
+
+    Sodio:
+    0.2 × Kg × (140 - Na actual)
+  </div>
+
 </Section>
       </div>
 

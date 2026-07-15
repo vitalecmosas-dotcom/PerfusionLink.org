@@ -66,14 +66,81 @@ export function exportarReporteExcel(datos: DatosClinicos) {
 
     { Seccion: "=== ESCALAS DE RIESGO ===", Campo: "", Valor: "" },
 
-    { Seccion: "", Campo: "TRUST SCORE", Valor: trustScore },
-    { Seccion: "", Campo: "VIS SCORE", Valor: visScore.toFixed(1) },
+{ Seccion: "", Campo: "TRUST SCORE", Valor: trustScore },
 
-    ...Object.entries(vis).map(([k, v]) => ({
-      Seccion: "",
-      Campo: k,
-      Valor: v,
-    })),
+{ Seccion: "", Campo: "VIS SCORE", Valor: visScore.toFixed(1) },
+
+{ 
+  Seccion: "", 
+  Campo: "EUROSCORE II", 
+  Valor: datos.escalasRiesgo.euroscore.score || "" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "RIESGO EUROSCORE", 
+  Valor: datos.escalasRiesgo.euroscore.riesgo || "" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "Edad EuroScore", 
+  Valor: datos.escalasRiesgo.euroscore.edad || "" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "Sexo EuroScore", 
+  Valor: datos.escalasRiesgo.euroscore.sexo || "" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "Creatinina EuroScore", 
+  Valor: datos.escalasRiesgo.euroscore.creatinina || "" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "FEVI EuroScore", 
+  Valor: datos.escalasRiesgo.euroscore.fevi || "" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "NYHA", 
+  Valor: datos.escalasRiesgo.euroscore.nyha || "" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "Cirugía urgente", 
+  Valor: datos.escalasRiesgo.euroscore.cirugiaUrgente ? "SI" : "NO" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "Cirugía aórtica", 
+  Valor: datos.escalasRiesgo.euroscore.cirugiaAortica ? "SI" : "NO" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "Endocarditis", 
+  Valor: datos.escalasRiesgo.euroscore.endocarditis ? "SI" : "NO" 
+},
+
+{ 
+  Seccion: "", 
+  Campo: "Estado crítico", 
+  Valor: datos.escalasRiesgo.euroscore.estadoCritico ? "SI" : "NO" 
+},
+
+...Object.entries(vis).map(([k, v]) => ({
+  Seccion: "",
+  Campo: k,
+  Valor: v,
+})),
   ];
 
   const pacienteSheet = XLSX.utils.json_to_sheet(pacienteRows);
